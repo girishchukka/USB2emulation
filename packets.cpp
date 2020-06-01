@@ -23,12 +23,23 @@ UINT32 Token::getTokenPkt() {
 	}
 }
 
+void Token::printTokenPkt(UINT32 pkt) {
+	if(getPID() == PID_TOKEN_SOF)
+		std::printf("\n%.4x   #pid = %x, frameNumber = %x, crc5 = %x\n", pkt, m_pid, getFrameNo(), getCRC5());
+	else
+		std::printf("\n%.4x   #pid = %x, addr = %x, ep = %x, crc5 = %x\n", pkt, m_pid, getAddr(), getEP(), getCRC5());
+}
+
 UINT32 Token::consumeTokenPkt(Token tkn) {
 	return 0;
 }
 
 UINT8 Handshake::getHandshakePkt() {
 	return (m_pid & 0xFF);
+}
+
+void Handshake::printHandshakePkt(UINT8 pkt) {
+	std::printf("\n%.2x\n", pkt);
 }
 
 UINT8 Handshake::consumeHandshakePkt(Handshake pkt) {
@@ -76,12 +87,10 @@ void Data::setCRC16() {
 }
 
 void Data::printData() {
-	std::cout << "Inside printData():" << std::endl;
-	std::cout << "Data length in bytes : " << m_dataLenInBytes << std::endl;
-	std::cout << "Data start:" << std::endl;
+	std::cout << std::endl;
 	for (int i = 0; i < m_dataLenInBytes; i++)
 		std::printf("%x ", m_dataSrc[i] & 0xFF);
-	std::cout << "\nData end" << std::endl;
+	std::cout << std::endl;
 }
 
 UINT32 Data::get2BytesforCRCcalc(UINT32 *data, UINT32 &len) {
@@ -101,8 +110,22 @@ UINT32 Data::get2BytesforCRCcalc(UINT32 *data, UINT32 &len) {
 }
 
 UINT32* Data::getDataPkt() {
-	// TODO
-	return 0;
+	UINT32 *pkt = NULL;
+	// PID + CRC16 =>2 and then m_dataLenInBytes
+	pkt = new UINT32[m_dataLenInBytes + 2];
+	pkt[0] = getPID();
+	pkt[m_dataLenInBytes + 1] = getCRC16();
+	memcpy(&pkt[1], m_dataSrc, m_dataLenInBytes * sizeof(UINT32));
+	return pkt;
+}
+
+void Data::printDataPkt(UINT32 *pkt) {
+	int i;
+	std::cout << std::endl;
+	for (i = 0; i < m_dataLenInBytes + 1; i++)
+		std::printf("%.2x ", pkt[i]);
+	std::printf("%.4x\n", pkt[i]);
+	std::cout << std::endl;
 }
 
 void Data::consumeDataPkt() {

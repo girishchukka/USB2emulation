@@ -46,6 +46,7 @@ public:
 
 	/* Other functions */
 	UINT32 getTokenPkt();
+	void printTokenPkt(UINT32 pkt);
 	UINT32 consumeTokenPkt(Token tkn);
 };
 
@@ -63,6 +64,7 @@ public:
 
 	/* Other functions */
 	UINT8 getHandshakePkt();
+	void printHandshakePkt(UINT8 pkt);
 	UINT8 consumeHandshakePkt(Handshake pkt);
 };
 
@@ -74,9 +76,8 @@ class Data {
 	UINT16 m_crc16;
 
 public:
-	Data() { m_pid = 0; m_dataLenInBytes = 0; m_dataSrc = NULL; m_crc16 = 0; }
 	Data(UINT8 pid) { setPID(pid); m_dataLenInBytes = 0; m_dataSrc = NULL; m_crc16 = 0; }
-	~Data() { delete m_dataSrc; }
+	~Data() { delete m_dataSrc; delete getDataPkt(); }
 
 	/* set and get functions */
 	void setPID(UINT8 pid) { pid &= 0xF; m_pid = pid | pid << 4; setCRC16(); }
@@ -91,6 +92,7 @@ public:
 
 	/* get and consume data packets */
 	UINT32 *getDataPkt();
+	void printDataPkt(UINT32 *pkt);
 	void consumeDataPkt();
 
 private:
