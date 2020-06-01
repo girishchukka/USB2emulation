@@ -75,12 +75,7 @@ class Data {
 
 public:
 	Data() { m_pid = 0; m_dataLenInBytes = 0; m_dataSrc = NULL; m_crc16 = 0; }
-	Data(UINT8 pid) {
-		setPID(pid);
-		m_dataLenInBytes = 0;
-		m_dataSrc = NULL;
-		m_crc16 = 0;
-	}
+	Data(UINT8 pid) { setPID(pid); m_dataLenInBytes = 0; m_dataSrc = NULL; m_crc16 = 0; }
 	~Data() { delete m_dataSrc; }
 
 	/* set and get functions */
@@ -94,6 +89,7 @@ public:
 	/* Print Data */
 	void printData();
 
+	/* get and consume data packets */
 	UINT32 *getDataPkt();
 	void consumeDataPkt();
 
