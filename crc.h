@@ -1,6 +1,6 @@
 #pragma once
 #include<iostream>
-#include"fieldDefs.h"
+#include"macros.h"
 
 class crc {
 public:

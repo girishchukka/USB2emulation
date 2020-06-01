@@ -2,8 +2,8 @@
 
 #include<iostream>
 
-#include"fieldDefs.h"
-#include"crc_n.h"
+#include"macros.h"
+#include"crc.h"
 
 /* Token packets = SETUP, OUT, IN, SOF */
 class Token {

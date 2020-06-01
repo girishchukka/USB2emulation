@@ -1,5 +1,5 @@
 #include<iostream>
-#include"crc_n.h"
+#include"crc.h"
 
 UINT8 crc::getHiBit(UINT32 in) {
 	for (int i = 31; i >= 0; i--)
