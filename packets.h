@@ -4,9 +4,10 @@
 
 #include"macros.h"
 #include"crc.h"
+#include"bitOps.h"
 
 /* Token packets = SETUP, OUT, IN, SOF */
-class Token {
+class Token : public bitOps {
 	UINT32 m_pid;
 	UINT32 m_addr;
 	UINT32 m_ep;
@@ -51,7 +52,7 @@ public:
 };
 
 /* Handshake packets = ACK, NAK, STALL, NYET */
-class Handshake {
+class Handshake : public bitOps {
 	UINT32 m_pid;
 
 public:
@@ -69,7 +70,7 @@ public:
 };
 
 /* DATA packets = DATA0, DATA1, DATA2, MDATA */
-class Data {
+class Data : public bitOps {
 	UINT8 m_pid;
 	UINT32 m_dataLenInBytes;
 	UINT32 *m_dataSrc;
